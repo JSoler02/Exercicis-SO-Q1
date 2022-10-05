@@ -14,14 +14,14 @@ int main(int argc, char **argv)
 	strcpy (nombre, "'Juan'");
 	char consulta [500];
 	
-	//Creamos una conexion al servidor MYSQL 
+	// Creamos una conexion al servidor MYSQL 
 	conn = mysql_init(NULL);
 	if (conn==NULL) {
 		printf ("Error al crear la conexion: %u %s\n", 
 				mysql_errno(conn), mysql_error(conn));
 		exit (1);
 	}
-	//inicializar la conexion
+	// Inicializamos la conexion
 	conn = mysql_real_connect (conn, "localhost","root", "mysql", "bdFireWater",0, NULL, 0);
 	if (conn==NULL) {
 		printf ("Error al inicializar la conexion: %u %s\n", 
@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 	strcpy (consulta,"SELECT partida.id FROM (jugador, partida, historial) WHERE jugador.username = "); 
 	strcat (consulta, nombre);
 	strcat (consulta," AND jugador.id = historial.id_j AND historial.id_p = partida.id AND partida.id IN (SELECT partida.id FROM(partida) WHERE partida.duracion > 120);");
-	// hacemos la consulta 
+	 
 	err=mysql_query (conn, consulta); 
 	if (err!=0) {
 		printf ("Error al consultar datos de la base %u %s\n",
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 		exit (1);
 	}
 	
-	//recogemos el resultado de la consulta 
+	// Miramos el resultado de la consulta 
 	resultado = mysql_store_result (conn); 
 	row = mysql_fetch_row (resultado);
 	if (row == NULL)
